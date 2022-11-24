@@ -1,0 +1,112 @@
+[
+    {
+        
+            "category_id": 1,
+            "image": "https://i.ibb.co/rMF3zFY/xtreame-160r-stealth-edition-right-side-view-360x240.jpg",
+            "title": "Hero Xtreme 160R",
+            "location": "Dhanmondi,Dhaka",
+            "resale_price": "1400",
+            "original_price": "2000",
+            "years_of_use": "2",
+            "years_of_buy": "0 year",
+            "product_condition": "Excellent",
+            "post_time": "04/10/2022, 10:00 AM",
+            "seller_name": "Momin",
+            "seller_verified": "verified",
+            "seller_phone": "01934235323",
+            "seller_email": "momin@gmail.com",
+            "description": "Hero Xtreme 160R is powered by 163 cc engine. This Xtreme 160R engine generates a power of 15.2 PS @ 8500 rpm and a torque of 14 Nm @ 6500 rpm. The claimed mileage of Xtreme 160R is 55.47 kmpl. Hero Xtreme 160R gets Disc brakes in the front and rear."
+          
+    },
+    {
+        
+        "category_id": 1,
+        "image": "https://i.ibb.co/pZxxVQ5/hero-super-spl-right-side-view-360x240.jpg",
+        "title": "Hero Super Splendor",
+        "location": "Pollibi,Dhaka",
+        "resale_price": "1600",
+        "original_price": "3000",
+        "years_of_use": "2",
+        "years_of_buy": "0",
+        "product_condition": "good",
+        "post_time": "10/10/2022, 9:00 AM",
+        "seller_name": "nobin",
+        "seller_verified": "verified",
+        "seller_phone": "017342335323",
+        "seller_email": "nobin@gmail.com",
+        "description": "The Hero Super Splendor is powered by 124.7cc BS6 engine which develops a power of 10.72 bhp and a torque of 10.6 Nm. With both front and rear drum brakes, Hero Super Splendor comes up with combined braking system of both wheels. This Super Splendor bike weighs 122 kg and has a fuel tank capacity of 12 liters."
+    },
+    {
+        
+        "category_id": 2,
+        "image": "https://i.ibb.co/QDT0gry/yamaha-r15m-image01.jpg",
+        "title": "Yamaha R15M",
+        "location": "Mirpur,Dhaka",
+        "resale_price": "1800",
+        "original_price": "2500",
+        "years_of_use": "1",
+        "years_of_buy": "0",
+        "product_condition": "excellent",
+        "post_time": "04/11/2022, 9:00 PM",
+        "seller_name": "riaj",
+        "seller_verified": "verified",
+        "seller_phone": "017342335378",
+        "seller_email": "riaj@gmail.com",
+        "description": "Yamaha R15M. Born of Yamaha's racing DNA that shaped legends like M1, The R1M and the R-series, The R15M takes the racing quotient to next level with stunning new graphics, 3D Emblem & Special Seat, 155 CC LC4V SOHC FI ENGINE WITH VVA equipped with a Traction Control System and a Quick Shifter."
+    },
+    {
+        
+        "category_id": 2,
+        "image": "https://i.ibb.co/5Y1bWMs/yamaha-xsr-155-first1.jpg",
+        "title": "Yamaha XSR 155",
+        "location": "Dhanmongi,Dhaka",
+        "resale_price": "2000",
+        "original_price": "2500",
+        "years_of_use": "1",
+        "years_of_buy": "0",
+        "product_condition": "excellent",
+        "post_time": "06/11/2022, 9:00 PM",
+        "seller_name": "sobuj",
+        "seller_verified": "verified",
+        "seller_phone": "017342335345",
+        "seller_email": "sobuj@gmail.com",
+        "description": "Yamaha XSR155 is powered by 155 cc engine. This XSR155 engine generates a power of 19.3 PS @ 10000 rpm and a torque of 14.7 Nm @ 8500 rpm. The claimed mileage of XSR155 is 52.02 kmph. Yamaha XSR155 gets Disc brakes in the front and rear."
+    },
+    {
+        
+        "category_id": 3,
+        "image": "https://i.ibb.co/Z1ChsRn/bajaj-pulsar-n160-1.jpg",
+        "title": "Bajaj Pulsar N160",
+        "location": "Badda,Dhaka",
+        "resale_price": "1000",
+        "original_price": "2000",
+        "years_of_use": "1",
+        "years_of_buy": "0",
+        "product_condition": "good",
+        "post_time": "09/11/2022, 12:00 PM",
+        "seller_name": "rakib",
+        "seller_verified": "verified",
+        "seller_phone": "01734233564",
+        "seller_email": "rakib@gmail.com",
+        "description": "The Bajaj Pulsar N160 is powered by 164.82cc BS6 engine which develops a power of 15.68 bhp and a torque of 14.65 Nm. With both front and rear disc brakes, Bajaj Pulsar N160 comes up with anti-locking braking system. This Pulsar N160 bike weighs 152 kg and has a fuel tank capacity of 14 liters."
+    },
+    {
+        
+        "category_id": 3,
+        "image": "https://i.ibb.co/dG95bTM/bajaj-pulsar-ns-160-first1.jpg",
+        "title": "Bajaj Pulsar NS 160",
+        "location": "Gulshan,Dhaka",
+        "resale_price": "2000",
+        "original_price": "3000",
+        "years_of_use": "3",
+        "years_of_buy": "0",
+        "product_condition": "good",
+        "post_time": "10/11/2022, 12:00 PM",
+        "seller_name": "Sojib",
+        "seller_verified": "verified",
+        "seller_phone": "017342333456",
+        "seller_email": "sojib@gmail.com",
+        "description": "The Bajaj Pulsar NS160 is powered by 160.3cc BS6 engine which develops a power of 17.03 bhp and a torque of 14.6 Nm. With both front and rear disc brakes, Bajaj Pulsar NS160 comes up with anti-locking braking system. This Pulsar NS160 bike weighs 151 kg and has a fuel tank capacity of 12 liters."
+    }
+
+]

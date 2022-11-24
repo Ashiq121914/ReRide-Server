@@ -1,0 +1,18 @@
+[
+    {
+        "category_id":1,
+        "category_name":"Hero Honda",
+        "image":"https://i.ibb.co/6gMLtR7/hero-honda.jpg"
+        
+    },
+    {
+        "category_id":2,
+        "category_name":"Yamaha",
+        "image":"https://i.ibb.co/k54VFgR/yamaha.png"
+    },
+    {
+        "category_id":3,
+        "category_name":"Bajaj",
+        "image":"https://i.ibb.co/DWj1v2x/bajaj.jpg"
+    }
+]
