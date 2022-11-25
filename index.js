@@ -27,6 +27,7 @@ async function run() {
     const categoryProductCollection = client
       .db("ReRide")
       .collection("allCategoryProducts");
+    const usersCollection = client.db("ReRide").collection("users");
 
     //categories
     app.get("/categories", async (req, res) => {
@@ -45,6 +46,12 @@ async function run() {
         .find(query)
         .toArray();
       res.send(CategoryProducts);
+    });
+
+    app.post("/users", async (req, res) => {
+      const user = req.body;
+      const result = await usersCollection.insertOne(user);
+      res.send(result);
     });
   } finally {
   }
