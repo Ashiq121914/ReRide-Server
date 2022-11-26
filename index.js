@@ -28,6 +28,7 @@ async function run() {
       .db("ReRide")
       .collection("allCategoryProducts");
     const usersCollection = client.db("ReRide").collection("users");
+    const bookingsCollection = client.db("ReRide").collection("bookings");
 
     //categories
     app.get("/categories", async (req, res) => {
@@ -51,6 +52,26 @@ async function run() {
     app.post("/users", async (req, res) => {
       const user = req.body;
       const result = await usersCollection.insertOne(user);
+      res.send(result);
+    });
+
+    //bookings
+    app.post("/bookings", async (req, res) => {
+      const booking = req.body;
+
+      const query = {
+        userEmail: booking.userEmail,
+        productName: booking.productName,
+      };
+
+      const alreadyBooked = await bookingsCollection.find(query).toArray();
+
+      if (alreadyBooked.length) {
+        const message = `you already book ${booking.productName}`;
+        return res.send({ acknowledged: false, message });
+      }
+
+      const result = await bookingsCollection.insertOne(booking);
       res.send(result);
     });
   } finally {
