@@ -37,6 +37,30 @@ async function run() {
       res.send(categories);
     });
 
+    //getting all users
+    app.get("/users", async (req, res) => {
+      const query = {};
+      const categories = await usersCollection.find(query).toArray();
+      res.send(categories);
+    });
+
+    // for admin check
+    app.get("/users/admin/:email", async (req, res) => {
+      const email = req.params.email;
+
+      const query = { email: email };
+      const user = await usersCollection.findOne(query);
+
+      res.send({ idAdmin: user?.userType === "admin" });
+    });
+    // for Seller check
+    app.get("/users/seller/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { email: email };
+      const user = await usersCollection.findOne(query);
+      res.send({ idSeller: user?.userType === "seller" });
+    });
+
     app.get("/category/:id", async (req, res) => {
       const id = req.params.id;
       console.log(id);
