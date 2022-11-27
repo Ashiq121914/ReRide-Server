@@ -21,7 +21,6 @@ const client = new MongoClient(uri, {
   useUnifiedTopology: true,
   serverApi: ServerApiVersion.v1,
 });
-console.log(process.env.ACCESS_TOKEN);
 
 //jwt function
 function verifyJWT(req, res, next) {
@@ -63,11 +62,22 @@ async function run() {
       }
       next();
     };
+    //verify admin
+    const verifyAdmin = async (req, res, next) => {
+      const decodedEmail = req.decoded.email;
+      const query = { email: decodedEmail };
+      const user = await usersCollection.findOne(query);
+
+      if (user?.userType !== "admin") {
+        return res.status(403).status({ message: "forbidden" });
+      }
+      next();
+    };
 
     //jwt
     app.get("/jwt", async (req, res) => {
       const email = req.query.email;
-      console.log(email);
+
       const query = { email: email };
       const user = await usersCollection.findOne(query);
       if (user) {
@@ -120,7 +130,6 @@ async function run() {
 
     app.get("/category/:id", async (req, res) => {
       const id = req.params.id;
-      console.log(id);
 
       const query = { category_id: id };
 
@@ -134,7 +143,6 @@ async function run() {
       const email = req.query.email;
 
       const decodedEmail = req.decoded.email;
-      console.log(decodedEmail);
 
       if (email !== decodedEmail) {
         return res.status(403).send({ message: "forbidden access" });
@@ -158,6 +166,19 @@ async function run() {
 
       const products = await categoryProductCollection.find(query).toArray();
       res.send(products);
+    });
+
+    //getting all buyers
+    app.get("/allbuyer", verifyJWT, verifyAdmin, async (req, res) => {
+      const filter = { userType: "user" };
+      const allbuyers = await usersCollection.find(filter).toArray();
+      res.send(allbuyers);
+    });
+    //getting all seller
+    app.get("/allseller", verifyJWT, verifyAdmin, async (req, res) => {
+      const filter = { userType: "seller" };
+      const allseller = await usersCollection.find(filter).toArray();
+      res.send(allseller);
     });
 
     // posting a product
@@ -210,9 +231,17 @@ async function run() {
     // deleting product category
     app.delete("/products/:id", verifyJWT, verifySeller, async (req, res) => {
       const id = req.params.id;
-      console.log(id);
       const filter = { _id: ObjectId(id) };
       const result = await categoryProductCollection.deleteOne(filter);
+      res.send(result);
+    });
+
+    // deleting particular user
+    app.delete("/users/:id", verifyJWT, verifyAdmin, async (req, res) => {
+      const id = req.params.id;
+
+      const filter = { _id: ObjectId(id) };
+      const result = await usersCollection.deleteOne(filter);
       res.send(result);
     });
   } finally {
