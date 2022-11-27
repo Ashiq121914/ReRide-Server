@@ -50,6 +50,8 @@ async function run() {
     const usersCollection = client.db("ReRide").collection("users");
     const bookingsCollection = client.db("ReRide").collection("bookings");
 
+    const advertiseCollection = client.db("ReRide").collection("advertise");
+
     //verify seller
     const verifySeller = async (req, res, next) => {
       const decodedEmail = req.decoded.email;
@@ -82,6 +84,13 @@ async function run() {
     app.get("/categories", async (req, res) => {
       const query = {};
       const categories = await categoryCollection.find(query).toArray();
+      res.send(categories);
+    });
+
+    // geting advertised items
+    app.get("/advertisedItems", async (req, res) => {
+      const query = {};
+      const categories = await advertiseCollection.find(query).toArray();
       res.send(categories);
     });
 
@@ -136,10 +145,32 @@ async function run() {
       res.send(bookings);
     });
 
+    // getting seller products
+    app.get("/products", verifyJWT, verifySeller, async (req, res) => {
+      const email = req.query.email;
+
+      const decodedEmail = req.decoded.email;
+
+      if (email !== decodedEmail) {
+        return res.status(403).send({ message: "forbidden access" });
+      }
+      const query = { seller_email: email };
+
+      const products = await categoryProductCollection.find(query).toArray();
+      res.send(products);
+    });
+
     // posting a product
     app.post("/products", verifyJWT, verifySeller, async (req, res) => {
       const product = req.body;
       const result = await categoryProductCollection.insertOne(product);
+      res.send(result);
+    });
+
+    // posting a advertise
+    app.post("/advertiseProduct", verifyJWT, verifySeller, async (req, res) => {
+      const product = req.body;
+      const result = await advertiseCollection.insertOne(product);
       res.send(result);
     });
 
@@ -173,6 +204,15 @@ async function run() {
       }
 
       const result = await bookingsCollection.insertOne(booking);
+      res.send(result);
+    });
+
+    // deleting product category
+    app.delete("/products/:id", verifyJWT, verifySeller, async (req, res) => {
+      const id = req.params.id;
+      console.log(id);
+      const filter = { _id: ObjectId(id) };
+      const result = await categoryProductCollection.deleteOne(filter);
       res.send(result);
     });
   } finally {
