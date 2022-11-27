@@ -50,6 +50,18 @@ async function run() {
     const usersCollection = client.db("ReRide").collection("users");
     const bookingsCollection = client.db("ReRide").collection("bookings");
 
+    //verify seller
+    const verifySeller = async (req, res, next) => {
+      const decodedEmail = req.decoded.email;
+      const query = { email: decodedEmail };
+      const user = await usersCollection.findOne(query);
+
+      if (user?.userType !== "seller") {
+        return res.status(403).status({ message: "forbidden" });
+      }
+      next();
+    };
+
     //jwt
     app.get("/jwt", async (req, res) => {
       const email = req.query.email;
@@ -122,6 +134,13 @@ async function run() {
 
       const bookings = await bookingsCollection.find(query).toArray();
       res.send(bookings);
+    });
+
+    // posting a product
+    app.post("/products", verifyJWT, verifySeller, async (req, res) => {
+      const product = req.body;
+      const result = await categoryProductCollection.insertOne(product);
+      res.send(result);
     });
 
     app.post("/users", async (req, res) => {
