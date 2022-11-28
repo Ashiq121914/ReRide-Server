@@ -115,14 +115,14 @@ async function run() {
     });
 
     //getting all users
-    app.get("/users", async (req, res) => {
+    app.get("/users",verifyJWT, async (req, res) => {
       const query = {};
       const categories = await usersCollection.find(query).toArray();
       res.send(categories);
     });
 
     //getting a particular user
-    app.get("/users/:email", async (req, res) => {
+    app.get("/users/:email",verifyJWT, async (req, res) => {
       const email = req.params.email;
       console.log(email)
       const query = { email: email };
@@ -132,7 +132,7 @@ async function run() {
     });
 
     // for admin check
-    app.get("/users/admin/:email", async (req, res) => {
+    app.get("/users/admin/:email",async (req, res) => {
       const email = req.params.email;
 
       const query = { email: email };
