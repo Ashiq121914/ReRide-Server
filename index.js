@@ -57,6 +57,9 @@ async function run() {
     const paymentsCollection = client
     .db("ReRide")
     .collection("payments");
+    const wishlistCollection = client
+    .db("ReRide")
+    .collection("wishlists");
 
     //verify seller
     const verifySeller = async (req, res, next) => {
@@ -118,6 +121,16 @@ async function run() {
       res.send(categories);
     });
 
+    //getting a particular user
+    app.get("/users/:email", async (req, res) => {
+      const email = req.params.email;
+      console.log(email)
+      const query = { email: email };
+      const user = await usersCollection.find(query);
+      
+      res.send(user);
+    });
+
     // for admin check
     app.get("/users/admin/:email", async (req, res) => {
       const email = req.params.email;
@@ -149,6 +162,8 @@ async function run() {
     app.get("/bookings", verifyJWT, async (req, res) => {
       const email = req.query.email;
 
+      
+
       const decodedEmail = req.decoded.email;
 
       if (email !== decodedEmail) {
@@ -157,7 +172,24 @@ async function run() {
       const query = { userEmail: email };
 
       const bookings = await bookingsCollection.find(query).toArray();
+      
+
       res.send(bookings);
+    });
+    //wishlist
+    app.get("/wishlists", verifyJWT, async (req, res) => {
+      const email = req.query.email;
+      
+
+      const decodedEmail = req.decoded.email;
+      
+      if (email !== decodedEmail) {
+        return res.status(403).send({ message: "forbidden access" });
+      }
+      const query = { userEmail: email };
+
+      const wishlists = await wishlistCollection.find(query).toArray();
+      res.send(wishlists);
     });
 
     // getting seller products
@@ -194,6 +226,40 @@ async function run() {
       const query = { _id: ObjectId(id) };
       const booking = await bookingsCollection.findOne(query);
       res.send(booking);
+    });
+    // getting a wishlist
+    app.get("/wishlists/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const wishlist = await wishlistCollection.findOne(query);
+      res.send(wishlist);
+    });
+
+    // updating user info
+    app.put("/users/admin/:id", verifyJWT, verifyAdmin, async (req, res) => {
+      const id = req.params.id;
+      
+
+      const filter = { _id: ObjectId(id) };
+      const options = { upsert: true };
+      const updatedDoc = {
+        $set: {
+          seller_type: "verified",
+        },
+      };
+      const result = await usersCollection.updateOne(
+        filter,
+        updatedDoc,
+        options
+      );
+      res.send(result);
+    });
+
+    // wishlist
+    app.post("/wishlist", async (req, res) => {
+      const wishlist = req.body;
+      const result = await wishlistCollection.insertOne(wishlist);
+      res.send(result);
     });
 
     // posting a product
@@ -243,7 +309,7 @@ async function run() {
       res.send(result);
     });
 
-    // payment with stripe
+    // payment with stripe for orders
     app.post("/create-payment-intent", async (req, res) => {
       const booking = req.body;
       
@@ -260,8 +326,26 @@ async function run() {
         clientSecret: paymentIntent.client_secret,
       });
     });
+    // payment with stripe for wishlist
+    app.post("/create-payment-intent-wishlist", async (req, res) => {
+      const wishlist = req.body;
+      console.log(wishlist)
+      
+      const resale_price = wishlist.resale_price;
+      
+      const amount = resale_price * 100;
 
-    // updating payments info
+      const paymentIntent = await stripe.paymentIntents.create({  
+        currency: "usd",
+        amount: amount,
+        "payment_method_types": ["card"],     
+      });
+      res.send({
+        clientSecret: paymentIntent.client_secret,
+      });
+    });
+
+    // updating payments info for my order
     app.post("/payments", async (req, res) => {
       const payment = req.body;
       const result = await paymentsCollection.insertOne(payment);
@@ -277,6 +361,26 @@ async function run() {
         filter,
         updatedDoc
       );
+      
+      res.send(result);
+    });
+    // updating payments info for wishlist
+    app.post("/wishlist-payments", async (req, res) => {
+      const payment = req.body;
+      const result = await paymentsCollection.insertOne(payment);
+      const id = payment.bookingId;
+      const filter = { _id: ObjectId(id) };
+      const updatedDoc = {
+        $set: {
+          paid: true,
+          transactionId: payment.transactionId,
+        },
+      };
+      const updatedResult = await wishlistCollection.updateOne(
+        filter,
+        updatedDoc
+      );
+      
       res.send(result);
     });
 
