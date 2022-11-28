@@ -109,8 +109,8 @@ async function run() {
 
     // geting advertised items
     app.get("/advertisedItems", async (req, res) => {
-      const query = {};
-      const categories = await advertiseCollection.find(query).toArray();
+      const query = {advertised:true};
+      const categories = await categoryProductCollection.find(query).toArray();
       res.send(categories);
     });
 
@@ -148,6 +148,7 @@ async function run() {
       res.send({ idSeller: user?.userType === "seller" });
     });
 
+    // geting data for each category
     app.get("/category/:id", async (req, res) => {
       const id = req.params.id;
 
@@ -158,6 +159,9 @@ async function run() {
         .toArray();
       res.send(CategoryProducts);
     });
+
+
+    
 
     app.get("/bookings", verifyJWT, async (req, res) => {
       const email = req.query.email;
@@ -236,18 +240,18 @@ async function run() {
     });
 
     // updating user info
-    app.put("/users/admin/:id", verifyJWT, verifyAdmin, async (req, res) => {
-      const id = req.params.id;
+    app.put("/users/admin/:email", verifyJWT, verifyAdmin, async (req, res) => {
+      const email = req.params.email;
       
 
-      const filter = { _id: ObjectId(id) };
+      const filter = { seller_email: email };
       const options = { upsert: true };
       const updatedDoc = {
         $set: {
-          seller_type: "verified",
+          seller_state: "verified",
         },
       };
-      const result = await usersCollection.updateOne(
+      const result = await categoryProductCollection.updateMany(
         filter,
         updatedDoc,
         options
@@ -272,8 +276,27 @@ async function run() {
     // posting a advertise
     app.post("/advertiseProduct", verifyJWT, verifySeller, async (req, res) => {
       const product = req.body;
-      const result = await advertiseCollection.insertOne(product);
-      res.send(result);
+
+      
+      
+      const id = product._id;
+      const filter = { _id: ObjectId(id) };
+      const updatedDoc = {
+        $set: {
+          advertised: true,
+        },
+      };
+      const updatedResult = await categoryProductCollection.updateOne(
+        filter,
+        updatedDoc
+      );
+      
+      
+
+
+
+      
+      res.send({result:"updated"});
     });
 
     app.post("/users", async (req, res) => {
@@ -361,9 +384,14 @@ async function run() {
         filter,
         updatedDoc
       );
+      const updatedResult2 = await categoryProductCollection.updateOne(
+        filter,
+        updatedDoc
+      );
       
       res.send(result);
     });
+  
     // updating payments info for wishlist
     app.post("/wishlist-payments", async (req, res) => {
       const payment = req.body;
@@ -381,7 +409,7 @@ async function run() {
         updatedDoc
       );
       
-      res.send(result);
+      res.send(result); 
     });
 
     // deleting product category
